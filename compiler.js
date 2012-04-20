@@ -9,6 +9,7 @@
 };
 
 var getMidiPitch = function (note) {
+    if (!/^[a-g][0-9]$/.test(note)) return 'error';
     return 12 + note.charAt(1) * 12 + "c d ef g a b".indexOf(note.charAt(0).toLowerCase());
 };
 
@@ -26,11 +27,6 @@ var compileExprNode = function (expr, time, notes) {
             break;
 
         case 'rest':
-            notes.push({
-                tag: 'rest',
-                start: time,
-                dur: expr.dur
-            });
             break;
             
         case 'par':
@@ -73,9 +69,16 @@ var melody_mus = {
             dur: 250
         },
         right: {
-            tag: 'note',
-            pitch: 'b4',
-            dur: 250
+            tag: 'seq',
+            left: {
+                tag: 'rest',
+                dur: 125
+            },
+            right: {
+                tag: 'note',
+                pitch: 'b4',
+                dur: 250
+            }
         }
     },
     right: {
