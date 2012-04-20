@@ -1,7 +1,7 @@
 ﻿var endTime = function (time, expr) {
     switch (expr.tag) {
-        case 'note': return time + expr.dur;
-        case 'rest': return time + expr.duration;
+        case 'note':
+        case 'rest': return time + expr.dur;
         case 'par': return Math.max(endTime(time, expr.left), endTime(time, expr.right));
         case 'seq': return (time = endTime(time, expr.left)) && endTime(time, expr.right);
         case 'repeat': return time + expr.count * (endTime(time, expr.section) - time);
@@ -29,7 +29,7 @@ var compileExprNode = function (expr, time, notes) {
             notes.push({
                 tag: 'rest',
                 start: time,
-                dur: expr.duration
+                dur: expr.dur
             });
             break;
             
